@@ -7,6 +7,7 @@ library(dplyr)
 ## Read the PM25 and SCC data
 NEI <- readRDS("summarySCC_PM25.rds")
 SCC <- readRDS("Source_Classification_Code.rds")
+
 #Subset the PM2.5 emissions for Baltimore city fips = 24510
 a <- NEI$fips == "24510"
 baltimore <- NEI[a,]
