@@ -1,4 +1,3 @@
-library(ggplot2)
 library(dplyr)
 ## Read the PM25 and SCC data
 NEI <- readRDS("summarySCC_PM25.rds")
@@ -10,9 +9,13 @@ a <- SCC$Data.Category == "Onroad"
 scc <- SCC[a,1]
 
 # Filter all rows with the given SCC values
-vehicles <- filter(NEI,SCC==scc)
+vehicles <- NULL
+for(i in 1:length(scc)) {
+  a<- filter(la,SCC==scc[i])
+  vehicles <- rbind(vehicles,a)
+}
 
-# Compute the mean measures using the dplyr summarise_each
+# Compute the Emissions  using the dplyr summarise
 emissions <- vehicles %>% group_by(year)  %>% summarise(m = sum(Emissions))
 
 # Save plot
