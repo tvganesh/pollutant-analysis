@@ -9,11 +9,18 @@ df <- tbl_df(SCC)
 # Get all rows in SCC which have the string 'coal' in the SCC.Level.Three
 a <-grepl(".*coal.*",SCC$SCC.Level.Three,ignore.case=TRUE,fixed=FALSE,perl=TRUE)
 
+
 # Filter all rows with the given SCC values containing coal
 scc <- SCC[a,1]
-vehicles <- filter(NEI,SCC==scc)
+coalemissions <- NULL
 
-emissions <- vehicles %>% group_by(year)  %>% summarise(m = sum(Emissions))
+# Loop through the vector and accumlate all the
+for(i in 1:length(scc)) {
+    a<- filter(NEI,SCC==scc[i])
+    coalemissions <- rbind(coalemissions,a)
+}
+
+emissions <- coalemissions %>% group_by(year)  %>% summarise(m = sum(Emissions))
 
 # Save plot
 png("plot4.png")
