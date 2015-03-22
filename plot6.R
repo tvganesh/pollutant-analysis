@@ -17,12 +17,12 @@ a <- SCC$Data.Category == "Onroad"
 scc <- SCC[a,1]
 
 
-#Initialize to NULL
+#Initialize to Baltimore set to NULL
 bvehicles <- NULL
-
 # Filter all rows in Baltimore dataframe for on road emissions
 for(i in 1:length(scc)) {
   a<- filter(baltimore,SCC==scc[i])
+  # Append the rows for each vector
   bvehicles <- rbind(bvehicles,a)
 }
 
@@ -30,16 +30,18 @@ for(i in 1:length(scc)) {
 lavehicles <- NULL
 for(i in 1:length(scc)) {
   a<- filter(la,SCC==scc[i])
+  #Append the rows for la data set
   lavehicles <- rbind(lavehicles,a)
 }
 
 
-# Compute the Emissions for Baltimore using the dplyr summarise
+# Compute the Emissions for Baltimore using the dplyr summarise grouping by year
 b_emissions <- bvehicles %>% group_by(year)  %>% summarise(m = sum(Emissions))
 
-# Compute the Emissions for LosAngeles using the dplyr summarise
+# Compute the Emissions for LosAngeles using the dplyr summarise grouping by year
 l_emissions <- lavehicles %>% group_by(year)  %>% summarise(m = sum(Emissions))
 
+# Save the plot in plot6.png. Annotate with color and legend
 png("plot6.png")
 plot(b_emissions$year,b_emissions$m, xlab="Year",xlim=c(1998,2009),ylim=c(0,7000),
      ylab='Total Emissions',main="Total PM2.5 motor vehicle  emissions vs year")

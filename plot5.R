@@ -1,3 +1,8 @@
+#
+# plot5.R -  Computes  how motor emissions changed in Baltimore city
+# changed in Baltimore city between 1999 - 2008
+#
+################################################################
 library(dplyr)
 ## Read the PM25 and SCC data
 NEI <- readRDS("summarySCC_PM25.rds")
@@ -18,13 +23,14 @@ bvehicles <- NULL
 # Filter all rows in Baltimore dataframe for on road emissions
 for(i in 1:length(scc)) {
   a<- filter(baltimore,SCC==scc[i])
+  # Append the data records for the give scc value
   bvehicles <- rbind(bvehicles,a)
 }
 
-# Compute the Emissions  using the dplyr summarise
+# Compute the Emissions  using the dplyr summarise after grouping by year
 emissions <- bvehicles %>% group_by(year)  %>% summarise(m = sum(Emissions))
 
-# Save plot
+# Save plot in plot5.png
 png("plot5.png")
 plot(emissions$year,emissions$m, xlab="Year",xlim=c(1998,2009),
      ylab='Total Emissions',main="Total Baltimore motor vehicle emissions vs year")

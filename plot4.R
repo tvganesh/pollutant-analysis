@@ -1,3 +1,9 @@
+#
+# plot4.R -  Computes and plots the total PM2.5 coal emission per year
+# Compute how the coal emissions have changed in US 
+# between 1999 - 2008
+#
+################################################################
 library(ggplot2)
 library(dplyr)
 ## Read the PM25 and SCC data
@@ -12,14 +18,16 @@ a <-grepl(".*coal.*",SCC$SCC.Level.Three,ignore.case=TRUE,fixed=FALSE,perl=TRUE)
 
 # Filter all rows with the given SCC values containing coal
 scc <- SCC[a,1]
-coalemissions <- NULL
 
-# Loop through the vector and accumlate all the
+coalemissions <- NULL
+# Loop through the SCC vector and accumalate all the different coal emissions
 for(i in 1:length(scc)) {
     a<- filter(NEI,SCC==scc[i])
+    # Append the new rows for each scc value
     coalemissions <- rbind(coalemissions,a)
 }
 
+#Compute   coal based emissions  after grouping by year
 emissions <- coalemissions %>% group_by(year)  %>% summarise(m = sum(Emissions))
 
 # Save plot
