@@ -1,4 +1,8 @@
-library(dplyr)
+#
+# plot6.R -  Computes  how motor emissions changed in Baltimore city and LA county
+# between 1999 - 2008
+#
+################################################################library(dplyr)
 ## Read the PM25 and SCC data
 NEI <- readRDS("summarySCC_PM25.rds")
 SCC <- readRDS("Source_Classification_Code.rds")
